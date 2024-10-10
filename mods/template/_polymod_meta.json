@@ -1,0 +1,8 @@
+{
+	"title": "Template",
+	"description": "Your game description.",
+	"author": "You!",
+	"api_version": "1.0.0",
+	"mod_version": "1.0.0",
+	"license": "Apache 2.0"
+}
