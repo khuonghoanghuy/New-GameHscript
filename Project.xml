@@ -41,16 +41,13 @@
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
 
-	<!--In case you want to use polymod-->
-	<haxelib name="polymod" version="1.3.1" />
+	<!--Script-->
+	<haxelib name="linc_luajit" />
 
 	<!--In case you want to use nape with flixel-->
 	<!--<haxelib name="nape-haxe4" />-->
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
-
-	<!--Remove the legacy health system-->
-	<haxedef name="FLX_NO_HEALTH" />
 	
 	<!--Enable the Flixel core recording system-->
 	<!--<haxedef name="FLX_RECORD" />-->
