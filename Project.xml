@@ -30,6 +30,7 @@
 	<set name="BUILD_DIR" value="export" />
 	<source path="source" />
 	<assets path="mods" embed="false" />
+	<assets path="system" name="" />
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
