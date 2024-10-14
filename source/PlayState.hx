@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.text.FlxText;
+import haxe.io.Path;
 import scriptsCode.LuaCode;
 import sys.FileSystem;
 
@@ -33,13 +34,14 @@ class PlayState extends FlxState
 	override public function create()
 	{
 		super.create();
-		var folders = 'mods/' + Main.mainFolder + 'data/';
+		var folders = 'mods/' + Main.mainFolder + '/data/';
 		var folderToRead = FileSystem.readDirectory(folders);
 		for (file in folderToRead)
 		{
 			if (file.endsWith(".lua"))
 			{
-				luaScripts.push(new LuaCode(folders + file));
+				var scriptPath = Path.join([folders, file]);
+				luaScripts.push(new LuaCode(scriptPath));
 			}
 		}
 

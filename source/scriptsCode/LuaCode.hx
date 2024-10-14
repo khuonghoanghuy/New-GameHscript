@@ -1,6 +1,7 @@
 package scriptsCode;
 
 import flixel.FlxBasic;
+import flixel.text.FlxText;
 import llua.Convert;
 import llua.Lua.Lua_helper;
 import llua.Lua;
@@ -17,7 +18,7 @@ class LuaCode extends FlxBasic
 	var lua:State;
 	var playState:PlayState;
 
-	public function new(file:String)
+	public function new(?file:String)
 	{
 		super();
 
@@ -27,6 +28,12 @@ class LuaCode extends FlxBasic
 		LuaL.openlibs(lua);
 		Lua.init_callbacks(lua);
 
+		present();
+	}
+
+	public function present():Void
+	{
+		presentT();
 		add_callback("setProperty", function(tag:String, value:Dynamic)
 		{
 			var variable = tag.split('.');
@@ -54,7 +61,95 @@ class LuaCode extends FlxBasic
 		});
 	}
 
-	function add_callback(name:String, eventToDo:Dynamic)
+	function presentT()
+	{
+		add_callback("makeLuaText", function(tag:String, x:Float = 0, y:Float = 0, fieldwidth:Int = 0, text:String = "", size:Int = 8)
+		{
+			var luaText:FlxText = new FlxText(x, y, fieldwidth, text, size);
+			luaText.active = true;
+			playState.text.set(tag, luaText);
+		});
+
+		add_callback("setTextString", function(tag:String, text:String = "")
+		{
+			if (getExistsTag(tag))
+			{
+				getCodeTag(tag).text = text;
+			}
+		});
+		add_callback("setTextActive", function(tag:String, bool:Bool = true)
+		{
+			if (getExistsTag(tag))
+			{
+				getCodeTag(tag).active = bool;
+			}
+		});
+		add_callback("setTextSize", function(tag:String, size:Int = 8)
+		{
+			if (getExistsTag(tag))
+			{
+				getCodeTag(tag).size = size;
+			}
+		});
+		add_callback("setTextAutoSize", function(tag:String, bool:Bool = false)
+		{
+			if (getExistsTag(tag))
+			{
+				getCodeTag(tag).autoSize = bool;
+			}
+		});
+		add_callback("setTextBold", function(tag:String, bool:Bool = false)
+		{
+			if (getExistsTag(tag))
+			{
+				getCodeTag(tag).bold = bool;
+			}
+		});
+		add_callback("setTextItalic", function(tag:String, bool:Bool = false)
+		{
+			if (getExistsTag(tag))
+			{
+				getCodeTag(tag).italic = bool;
+			}
+		});
+
+		add_callback("addLuaText", function(tag:String)
+		{
+			if (getExistsTag(tag))
+			{
+				return playState.add(getCodeTag(tag));
+			}
+			return null;
+		});
+		add_callback("removeLuaText", function(tag:String)
+		{
+			if (getExistsTag(tag))
+			{
+				return playState.remove(getCodeTag(tag));
+			}
+			return null;
+		});
+	}
+
+	function getExistsTag(tag:String):Bool
+	{
+		if (!playState.text.exists(tag))
+		{
+			Logger.log("Object Text " + tag + " doesn't exists!");
+			return false;
+		}
+		else
+		{
+			return playState.text.exists(tag);
+		}
+	}
+
+	function getCodeTag(tag:String)
+	{
+		return playState.text.get(tag);
+	}
+
+	public function add_callback(name:String, eventToDo:Dynamic)
 		return Lua_helper.add_callback(lua, name, eventToDo);
 
 	// Friday Night Funkin' Psych Engine Code
