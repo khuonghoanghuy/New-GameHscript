@@ -45,98 +45,174 @@ class LuaCode extends FlxBasic
 			return;
 		}
 
-		add_callback("setProperty", function(tag:String, value:Dynamic)
+		add_callback("getProperty", function(tag:String, property:String)
 		{
-			var variable = tag.split('.');
-			if (variable.length == 2)
+			var splitDot:Array<String> = property.split('.');
+			var getData:Dynamic = null;
+			if (splitDot.length > 1)
 			{
-				var key = variable[1];
-
-				if (playState.images.exists(key))
+				if (getCameraExistsTag(splitDot[0]))
 				{
-					return Reflect.setProperty(playState.images.get(key), variable[0], value);
+					getData = getCameraTag(splitDot[0]);
 				}
-				else if (playState.text.exists(key))
+				else if (getImagesExistsTag(splitDot[0]))
 				{
-					return Reflect.setProperty(playState.text.get(key), variable[0], value);
+					getData = getImagesTag(splitDot[0]);
+				}
+				else if (getTextExistsTag(splitDot[0]))
+				{
+					getData = getTextTag(splitDot[0]);
+				}
+				for (i in 1...splitDot.length - 1)
+				{
+					getData = Reflect.getProperty(getData, splitDot[i]);
+				}
+				return Reflect.getProperty(getData, splitDot[splitDot.length - 1]);
+			}
+			return Reflect.getProperty(getData, splitDot[splitDot.length - 1]);
+		});
+		add_callback("setProperty", function(tag:String, property:String, value:Dynamic)
+		{
+			if (getCameraExistsTag(tag))
+			{
+				var camera = getCameraTag(tag);
+				var propertyParts:Array<String> = property.split(".");
+				if (propertyParts.length > 1)
+				{
+					var subProperty:String = propertyParts[0];
+					var subValue:String = propertyParts[1];
+					Reflect.setProperty(Reflect.getProperty(camera, subProperty), subValue, value);
 				}
 				else
 				{
-					Logger.log("Key not found in images or text: " + key);
+					Reflect.setProperty(camera, property, value);
 				}
 			}
-			else
+			else if (getImagesExistsTag(tag))
+				{
+				var sprite = getImagesTag(tag);
+				var propertyParts:Array<String> = property.split(".");
+				if (propertyParts.length > 1)
+				{
+					var subProperty:String = propertyParts[0];
+					var subValue:String = propertyParts[1];
+					Reflect.setProperty(Reflect.getProperty(sprite, subProperty), subValue, value);
+				}
+				else
+				{
+					Reflect.setProperty(sprite, property, value);
+				}
+			}
+			else if (getTextExistsTag(tag))
 			{
-				Logger.log("Invalid tag format: " + tag);
+				var text = getTextTag(tag);
+				var propertyParts:Array<String> = property.split(".");
+				if (propertyParts.length > 1)
+				{
+					var subProperty:String = propertyParts[0];
+					var subValue:String = propertyParts[1];
+					Reflect.setProperty(Reflect.getProperty(text, subProperty), subValue, value);
+				}
+				else
+				{
+					Reflect.setProperty(text, property, value);
+				}
 			}
 		});
+		add_callback("getPropertyFromClass", function(classes:String, value:String)
+		{
+			var splitDot:Array<String> = value.split(".");
+			var getClassProperty:Dynamic = Type.resolveClass(classes);
+			if (splitDot.length > 1)
+			{
+				for (i in 1...splitDot.length)
+				{
+					getClassProperty = Reflect.getProperty(getClassProperty, splitDot[i - 1]);
+				}
+				return Reflect.getProperty(getClassProperty, splitDot[splitDot.length - 1]);
+			}
+			return Reflect.getProperty(getClassProperty, value);
+		});
+		add_callback("setPropertyFromClass", function(classes:String, variable:String, value:Dynamic)
+		{
+			var splitDot:Array<String> = variable.split('.');
+			var getClassProperty:Dynamic = Type.resolveClass(classes);
+			if (splitDot.length > 1)
+			{
+				for (i in 1...splitDot.length - 1)
+				{
+					getClassProperty = Reflect.getProperty(getClassProperty, splitDot[i - 1]);
+				}
+				return Reflect.setProperty(getClassProperty, splitDot[splitDot.length - 1], value);
+			}
+			return Reflect.setProperty(getClassProperty, variable, value);
+		});
+		// Text Parent
 		add_callback("makeLuaText", function(tag:String, x:Float = 0, y:Float = 0, fieldwidth:Int = 0, text:String = "", size:Int = 8)
 		{
 			var luaText:FlxText = new FlxText(x, y, fieldwidth, text, size);
 			luaText.active = true;
 			playState.text.set(tag, luaText);
 		});
-
 		add_callback("setTextString", function(tag:String, text:String = "")
 		{
-			if (getExistsTag(tag))
+			if (getTextExistsTag(tag))
 			{
-				getCodeTag(tag).text = text;
+				getTextTag(tag).text = text;
 			}
 		});
 		add_callback("setTextActive", function(tag:String, bool:Bool = true)
 		{
-			if (getExistsTag(tag))
+			if (getTextExistsTag(tag))
 			{
-				getCodeTag(tag).active = bool;
+				getTextTag(tag).active = bool;
 			}
 		});
 		add_callback("setTextSize", function(tag:String, size:Int = 8)
 		{
-			if (getExistsTag(tag))
+			if (getTextExistsTag(tag))
 			{
-				getCodeTag(tag).size = size;
+				getTextTag(tag).size = size;
 			}
 		});
 		add_callback("setTextAutoSize", function(tag:String, bool:Bool = false)
 		{
-			if (getExistsTag(tag))
+			if (getTextExistsTag(tag))
 			{
-				getCodeTag(tag).autoSize = bool;
+				getTextTag(tag).autoSize = bool;
 			}
 		});
 		add_callback("setTextBold", function(tag:String, bool:Bool = false)
 		{
-			if (getExistsTag(tag))
+			if (getTextExistsTag(tag))
 			{
-				getCodeTag(tag).bold = bool;
+				getTextTag(tag).bold = bool;
 			}
 		});
 		add_callback("setTextItalic", function(tag:String, bool:Bool = false)
 		{
-			if (getExistsTag(tag))
+			if (getTextExistsTag(tag))
 			{
-				getCodeTag(tag).italic = bool;
+				getTextTag(tag).italic = bool;
 			}
 		});
-
 		add_callback("addLuaText", function(tag:String)
 		{
-			if (getExistsTag(tag))
+			if (getTextExistsTag(tag))
 			{
 				playState.add(playState.text.get(tag));
 			}
 		});
 		add_callback("removeLuaText", function(tag:String)
 		{
-			if (getExistsTag(tag))
+			if (getTextExistsTag(tag))
 			{
 				playState.remove(playState.text.get(tag));
 			}
 		});
 	}
 
-	function getExistsTag(tag:String):Bool
+	function getTextExistsTag(tag:String):Bool
 	{
 		var value:Bool = false;
 		if (!playState.text.exists(tag))
@@ -151,9 +227,49 @@ class LuaCode extends FlxBasic
 		return value;
 	}
 
-	function getCodeTag(tag:String)
+	function getTextTag(tag:String)
 	{
 		return playState.text.get(tag);
+	}
+
+	function getImagesExistsTag(tag:String):Bool
+	{
+		var value:Bool = false;
+		if (!playState.images.exists(tag))
+		{
+			Logger.log("Object Images " + tag + " doesn't exists!");
+			value = false;
+		}
+		else
+		{
+			value = playState.images.exists(tag);
+		}
+		return value;
+	}
+
+	function getImagesTag(tag:String)
+	{
+		return playState.images.get(tag);
+	}
+
+	function getCameraExistsTag(tag:String):Bool
+	{
+		var value:Bool = false;
+		if (!playState.camGame.exists(tag))
+		{
+			Logger.log("Object Camera " + tag + " doesn't exists!");
+			value = false;
+		}
+		else
+		{
+			value = playState.camGame.exists(tag);
+		}
+		return value;
+	}
+
+	function getCameraTag(tag:String)
+	{
+		return playState.camGame.get(tag);
 	}
 
 	public function add_callback(name:String, eventToDo:Dynamic)
