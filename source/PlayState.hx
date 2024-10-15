@@ -1,12 +1,9 @@
 package;
 
-import flixel.FlxCamera;
-import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.FlxState;
+import flixel.*;
 import flixel.text.FlxText;
 import haxe.io.Path;
-import scriptsCode.LuaCode;
+import scriptsCode.*;
 import sys.FileSystem;
 
 using StringTools;
@@ -26,6 +23,7 @@ class PlayState extends FlxState
 	public var camGame:Map<String, FlxCamera> = new Map<String, FlxCamera>();
 
 	static public var luaScripts:Array<LuaCode> = [];
+	static public var hscriptScripts:Array<HScriptCode> = [];
 
 	override public function create()
 	{
@@ -39,6 +37,12 @@ class PlayState extends FlxState
 				Logger.log("Lua File: " + file + " added");
 				var scriptPath = Path.join([folders, file]);
 				luaScripts.push(new LuaCode(scriptPath));
+			}
+			if (file.endsWith(".hx") || file.endsWith(".hxs"))
+			{
+				Logger.log("Haxe File: " + file + " added");
+				var scriptPath = Path.join([folders, file]);
+				hscriptScripts.push(new HScriptCode(scriptPath));
 			}
 		}
 
@@ -61,6 +65,11 @@ class PlayState extends FlxState
 			{
 				value = ret;
 			}
+		}
+
+		for (i in 0...hscriptScripts.length)
+		{
+			hscriptScripts[i].call(funcName, args);
 		}
 
 		return value;

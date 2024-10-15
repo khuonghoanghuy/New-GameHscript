@@ -1,5 +1,6 @@
 # v0.3.0
-* [ ] Added HScript into engine
+* [X] Added HScript into engine
+* [ ] Added Sounds, Music, Camera, Paths working
 * [ ] Make HScript can also being using scripts-classes (idea by Joalor64GH) (impossible)
 * [ ] Make Lua can able to shared code thought `requestCode` function
 * [ ] Make Lua can able to code shaders, etc

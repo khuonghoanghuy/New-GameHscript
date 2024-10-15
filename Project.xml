@@ -44,6 +44,7 @@
 
 	<!--Script-->
 	<haxelib name="linc_luajit" />
+	<haxelib name="hscript-iris" />
 
 	<!--In case you want to use nape with flixel-->
 	<!--<haxelib name="nape-haxe4" />-->
