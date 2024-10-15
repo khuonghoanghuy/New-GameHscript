@@ -148,6 +148,11 @@ class LuaCode extends FlxBasic
 			return Reflect.setProperty(getClassProperty, variable, value);
 		});
 		// Text Parent
+		presentText();
+	}
+
+	function presentText():Void
+	{
 		add_callback("makeLuaText", function(tag:String, x:Float = 0, y:Float = 0, fieldwidth:Int = 0, text:String = "", size:Int = 8)
 		{
 			var luaText:FlxText = new FlxText(x, y, fieldwidth, text, size);
@@ -231,6 +236,8 @@ class LuaCode extends FlxBasic
 	{
 		return playState.text.get(tag);
 	}
+
+	function presentImages():Void {}
 
 	function getImagesExistsTag(tag:String):Bool
 	{
