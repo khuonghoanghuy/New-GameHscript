@@ -14,5 +14,5 @@ Game Hscript is a text-based game engine by using script as source, this will ma
 * Joalor64GH - Hscript code
 * yophlox - Polymod Code
 ## From other repo:
-* (FNF Psych Engine)[https://gamebanana.com/mods/309789] - Code for Lua
-* (Rhythmo-SC)[https://github.com/Joalor64GH/Rhythmo-SC] - Code for Hscript (thank you Joalor64GH for letting me using every code in this repo)
+* [FNF Psych Engine](https://gamebanana.com/mods/309789) - Code for Lua
+* [Rhythmo-SC](https://github.com/Joalor64GH/Rhythmo-SC) - Code for Hscript (thank you Joalor64GH for letting me using every code in this repo)

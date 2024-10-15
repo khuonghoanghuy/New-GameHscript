@@ -12,18 +12,12 @@ using StringTools;
 
 class PlayState extends FlxState
 {
-	static var r_instance:PlayState = null;
-	public static var instance(get, default):PlayState;
+	public static var r_instance:PlayState = null;
 
 	public function new()
 	{
 		super();
 		r_instance = this;
-	}
-
-	static function get_instance():PlayState
-	{
-		return r_instance;
 	}
 
 	public var images:Map<String, FlxSprite> = new Map<String, FlxSprite>();
@@ -40,6 +34,7 @@ class PlayState extends FlxState
 		{
 			if (file.endsWith(".lua"))
 			{
+				Logger.log("Lua File: " + file + " added");
 				var scriptPath = Path.join([folders, file]);
 				luaScripts.push(new LuaCode(scriptPath));
 			}
@@ -52,8 +47,6 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 		callOnScripts("onUpdate", [elapsed]);
-		if (FlxG.keys.justPressed.F12)
-			openSubState(new SubLogState());
 	}
 	private function callOnScripts(funcName:String, args:Array<Dynamic>):Dynamic
 	{

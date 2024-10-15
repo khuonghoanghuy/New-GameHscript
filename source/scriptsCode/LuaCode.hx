@@ -18,22 +18,33 @@ class LuaCode extends FlxBasic
 	var lua:State;
 	var playState:PlayState;
 
-	public function new(?file:String)
+	public function new(file:String)
 	{
 		super();
 
-		playState = PlayState.instance;
+		playState = PlayState.r_instance;
 
 		lua = LuaL.newstate();
 		LuaL.openlibs(lua);
 		Lua.init_callbacks(lua);
 
-		present();
-	}
+		try
+		{
+			var result:Dynamic = LuaL.dofile(lua, file);
+			var resultStr:String = Lua.tostring(lua, result);
+			if (resultStr != null && result != 0)
+			{
+				Logger.log('Error loading lua script: "$file"\n' + resultStr, "[ERROR]");
+				lua = null;
+				return;
+			}
+		}
+		catch (e:Dynamic)
+		{
+			trace(e);
+			return;
+		}
 
-	public function present():Void
-	{
-		presentT();
 		add_callback("setProperty", function(tag:String, value:Dynamic)
 		{
 			var variable = tag.split('.');
@@ -59,10 +70,6 @@ class LuaCode extends FlxBasic
 				Logger.log("Invalid tag format: " + tag);
 			}
 		});
-	}
-
-	function presentT()
-	{
 		add_callback("makeLuaText", function(tag:String, x:Float = 0, y:Float = 0, fieldwidth:Int = 0, text:String = "", size:Int = 8)
 		{
 			var luaText:FlxText = new FlxText(x, y, fieldwidth, text, size);
@@ -117,31 +124,31 @@ class LuaCode extends FlxBasic
 		{
 			if (getExistsTag(tag))
 			{
-				return playState.add(getCodeTag(tag));
+				playState.add(playState.text.get(tag));
 			}
-			return null;
 		});
 		add_callback("removeLuaText", function(tag:String)
 		{
 			if (getExistsTag(tag))
 			{
-				return playState.remove(getCodeTag(tag));
+				playState.remove(playState.text.get(tag));
 			}
-			return null;
 		});
 	}
 
 	function getExistsTag(tag:String):Bool
 	{
+		var value:Bool = false;
 		if (!playState.text.exists(tag))
 		{
 			Logger.log("Object Text " + tag + " doesn't exists!");
-			return false;
+			value = false;
 		}
 		else
 		{
-			return playState.text.exists(tag);
+			value = playState.text.exists(tag);
 		}
+		return value;
 	}
 
 	function getCodeTag(tag:String)
