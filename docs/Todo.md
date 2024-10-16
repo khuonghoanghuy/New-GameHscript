@@ -5,4 +5,4 @@
 * [ ] Make Lua can able to shared code thought `requestCode` function
 * [ ] Make Lua can able to code shaders, etc
 * [ ] Make Lua can able to load all .lua file when on data and more sub-folders (impossible)
-* [ ] Make HScript can import classes (impossible)
+* [X] Make HScript can import classes (import classes by `importClass()`)

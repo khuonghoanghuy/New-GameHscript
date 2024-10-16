@@ -4,6 +4,8 @@ import crowplexus.iris.Iris;
 import crowplexus.iris.IrisConfig;
 import flixel.FlxBasic;
 
+using StringTools;
+
 class HScriptCode extends FlxBasic
 {
 	public var myScript:Iris;
@@ -14,6 +16,38 @@ class HScriptCode extends FlxBasic
 		final rules:RawIrisConfig = {name: "hscript-iris", autoRun: false, autoPreset: true};
 		final getText:String->String = #if sys sys.io.File.getContent #elseif openfl openfl.utils.Assets.getText #end;
 		myScript = new Iris(getText(file), rules);
+		myScript.preset();
+		myScript.set('importClass', function(daClass:String, ?asDa:String)
+		{
+			final splitClassName:Array<String> = [for (e in daClass.split('.')) e.trim()];
+			final className:String = splitClassName.join('.');
+			final daClass:Class<Dynamic> = Type.resolveClass(className);
+			final daEnum:Enum<Dynamic> = Type.resolveEnum(className);
+
+			if (daClass == null && daEnum == null)
+				Logger.log("Classes/Enum you want to added not found!", "[ERROR]");
+			else
+			{
+				if (daEnum != null)
+				{
+					var daEnumField = {};
+					for (daConstructor in daEnum.getConstructors())
+						Reflect.setField(daEnumField, daConstructor, daEnum.createByName(daConstructor));
+
+					if (asDa != null && asDa != '')
+						myScript.set(asDa, daEnumField);
+					else
+						myScript.set(splitClassName[splitClassName.length - 1], daEnumField);
+				}
+				else
+				{
+					if (asDa != null && asDa != '')
+						myScript.set(asDa, daClass);
+					else
+						myScript.set(splitClassName[splitClassName.length - 1], daClass);
+				}
+			}
+		});
 		myScript.execute();
 	}
 
