@@ -25,7 +25,7 @@ class HScriptCode extends FlxBasic
 			final daEnum:Enum<Dynamic> = Type.resolveEnum(className);
 
 			if (daClass == null && daEnum == null)
-				Logger.log("Classes/Enum you want to added not found!", "[ERROR]");
+				Logger.log("Class/Enum you want to added not found!\nName Class/Enum: " + Std.string(className), "[ERROR]");
 			else
 			{
 				if (daEnum != null)
@@ -47,6 +47,15 @@ class HScriptCode extends FlxBasic
 						myScript.set(splitClassName[splitClassName.length - 1], daClass);
 				}
 			}
+		});
+		myScript.set("game", PlayState.r_instance);
+		myScript.set("add", function(basic:FlxBasic)
+		{
+			return PlayState.r_instance.add(basic);
+		});
+		myScript.set("remove", function(basic:FlxBasic)
+		{
+			return PlayState.r_instance.remove(basic);
 		});
 		myScript.execute();
 	}

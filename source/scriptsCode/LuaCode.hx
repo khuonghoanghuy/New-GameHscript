@@ -45,80 +45,91 @@ class LuaCode extends FlxBasic
 			return;
 		}
 
-		add_callback("getProperty", function(tag:String, property:String)
+		add_callback("getProperty", function(tagAndProperty:String):Dynamic
 		{
-			var splitDot:Array<String> = property.split('.');
-			var getData:Dynamic = null;
-			if (splitDot.length > 1)
+			var parts:Array<String> = tagAndProperty.split('.');
+
+			if (parts.length < 2)
 			{
-				if (getCameraExistsTag(splitDot[0]))
-				{
-					getData = getCameraTag(splitDot[0]);
-				}
-				else if (getImagesExistsTag(splitDot[0]))
-				{
-					getData = getImagesTag(splitDot[0]);
-				}
-				else if (getTextExistsTag(splitDot[0]))
-				{
-					getData = getTextTag(splitDot[0]);
-				}
-				for (i in 1...splitDot.length - 1)
-				{
-					getData = Reflect.getProperty(getData, splitDot[i]);
-				}
-				return Reflect.getProperty(getData, splitDot[splitDot.length - 1]);
+				Logger.log("Invalid tag format: " + tagAndProperty);
+				return null;
 			}
-			return Reflect.getProperty(getData, splitDot[splitDot.length - 1]);
-		});
-		add_callback("setProperty", function(tag:String, property:String, value:Dynamic)
-		{
+			var tag:String = parts.shift();
+			var propertyPath:Array<String> = parts;
+
+			var target:Dynamic = null;
+
 			if (getCameraExistsTag(tag))
 			{
-				var camera = getCameraTag(tag);
-				var propertyParts:Array<String> = property.split(".");
-				if (propertyParts.length > 1)
-				{
-					var subProperty:String = propertyParts[0];
-					var subValue:String = propertyParts[1];
-					Reflect.setProperty(Reflect.getProperty(camera, subProperty), subValue, value);
-				}
-				else
-				{
-					Reflect.setProperty(camera, property, value);
-				}
+				target = getCameraTag(tag);
 			}
 			else if (getImagesExistsTag(tag))
-				{
-				var sprite = getImagesTag(tag);
-				var propertyParts:Array<String> = property.split(".");
-				if (propertyParts.length > 1)
-				{
-					var subProperty:String = propertyParts[0];
-					var subValue:String = propertyParts[1];
-					Reflect.setProperty(Reflect.getProperty(sprite, subProperty), subValue, value);
-				}
-				else
-				{
-					Reflect.setProperty(sprite, property, value);
-				}
+			{
+				target = getImagesTag(tag);
 			}
 			else if (getTextExistsTag(tag))
 			{
-				var text = getTextTag(tag);
-				var propertyParts:Array<String> = property.split(".");
-				if (propertyParts.length > 1)
+				target = getTextTag(tag);
+			}
+			else if (!getTextExistsTag(tag) || !getImagesExistsTag(tag) || !getCameraExistsTag(tag))
+			{
+				Logger.log("Key not found in camera, images, or text: " + tag);
+				return null;
+			}
+			for (i in 0...propertyPath.length - 1)
+			{
+				target = Reflect.getProperty(target, propertyPath[i]);
+				if (target == null)
 				{
-					var subProperty:String = propertyParts[0];
-					var subValue:String = propertyParts[1];
-					Reflect.setProperty(Reflect.getProperty(text, subProperty), subValue, value);
-				}
-				else
-				{
-					Reflect.setProperty(text, property, value);
+					Logger.log("Property path not found: " + propertyPath[i]);
+					return null;
 				}
 			}
+			return Reflect.getProperty(target, propertyPath[propertyPath.length - 1]);
 		});
+		add_callback("setProperty", function(tagAndProperty:String, value:Dynamic)
+		{
+			var parts:Array<String> = tagAndProperty.split('.');
+
+			if (parts.length < 2)
+			{
+				Logger.log("Invalid tag format: " + tagAndProperty);
+				return;
+			}
+			var tag:String = parts.shift();
+			var propertyPath:Array<String> = parts;
+
+			var target:Dynamic = null;
+
+			if (getCameraExistsTag(tag))
+			{
+				target = getCameraTag(tag);
+			}
+			else if (getImagesExistsTag(tag))
+			{
+				target = getImagesTag(tag);
+			}
+			else if (getTextExistsTag(tag))
+			{
+				target = getTextTag(tag);
+			}
+			else if (!getTextExistsTag(tag) || !getImagesExistsTag(tag) || !getCameraExistsTag(tag))
+			{
+				Logger.log("Key not found in camera, images, or text: " + tag);
+				return;
+			}
+			for (i in 0...propertyPath.length - 1)
+			{
+				target = Reflect.getProperty(target, propertyPath[i]);
+				if (target == null)
+				{
+					Logger.log("Property path not found: " + propertyPath[i]);
+					return;
+				}
+			}
+			Reflect.setProperty(target, propertyPath[propertyPath.length - 1], value);
+		});
+
 		add_callback("getPropertyFromClass", function(classes:String, value:String)
 		{
 			var splitDot:Array<String> = value.split(".");
@@ -146,6 +157,19 @@ class LuaCode extends FlxBasic
 				return Reflect.setProperty(getClassProperty, splitDot[splitDot.length - 1], value);
 			}
 			return Reflect.setProperty(getClassProperty, variable, value);
+		});
+		add_callback("setVar", function(key:String, value:Dynamic)
+		{
+			LuaStore.setVar(key, value);
+		});
+
+		add_callback("getVar", function(key:String):Dynamic
+		{
+			return LuaStore.getVar(key);
+		});
+		add_callback("luaTrace", function(text:String)
+		{
+			trace(text);
 		});
 		// Text Parent
 		presentText();
