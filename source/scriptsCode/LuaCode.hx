@@ -1,6 +1,8 @@
 package scriptsCode;
 
 import flixel.FlxBasic;
+import flixel.FlxCamera;
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
 import llua.Convert;
@@ -461,6 +463,27 @@ class LuaCode extends FlxBasic
 	function getImagesTag(tag:String)
 	{
 		return playState.images.get(tag);
+	}
+
+	function presentCamera():Void
+	{
+		add_callback("makeCamera", function(tag:String, x:Float = 0, y:Float = 0, zoom:Int = 1)
+		{
+			var cam:FlxCamera = new FlxCamera(x, y, 0, 0, zoom);
+			cam.active = true;
+			playState.camGame.set(tag, cam);
+		});
+
+		add_callback("addLuaCamera", function(tag:String, draw:Bool = false)
+		{
+			if (getCameraExistsTag(tag))
+				FlxG.cameras.add(getCameraTag(tag), draw);
+		});
+		add_callback("removeLuaCamera", function(tag:String, destroyBool:Bool = true)
+		{
+			if (getCameraExistsTag(tag))
+				FlxG.cameras.remove(getCameraTag(tag), destroyBool);
+		});
 	}
 
 	function getCameraExistsTag(tag:String):Bool

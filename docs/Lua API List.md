@@ -29,3 +29,9 @@
 * addAnimByStringIndices(tag:String, name:String, prefix:String, idices:Array(String), fps:Int = 24, looped:Bool = false) - same as `addAnimByIndices` but with number, string text only
 * addLuaSprite(tag:String) - add sprite into the game
 * removeLuaSprite(tag:String) - remove sprite from the game
+## Camera API
+* makeCamera(tag:String, x:Float = 0, y:Float = 0, zoom:Int = 1) - make/init a camera, using `addObject` or `addLuaCamera` to add the current target camera
+* addLuaCamera(tag:String, draw:Bool = false) - add a current target camera, set `draw` to true if you wanna render the camera
+* removeLuaCamera(tag:String, destroyBool:Bool = false) - remove a current target camera
+## Misc
+* luaTrace(text:String) - traced text onto command/terminal
