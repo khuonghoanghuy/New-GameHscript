@@ -1,3 +1,0 @@
-# @install: lix --silent download "haxelib:/hscript-iris#1.1.0" into hscript-iris/1.1.0/haxelib
--cp ${HAXE_LIBCACHE}/hscript-iris/1.1.0/haxelib/
--D hscript-iris=1.1.0
