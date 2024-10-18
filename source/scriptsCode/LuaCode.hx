@@ -164,11 +164,13 @@ class LuaCode extends FlxBasic
 			var target:Dynamic = null;
 			if (getTextExistsTag(tag))
 			{
-				return target = getTextTag(tag).screenCenter();
+				target = getTextTag(tag).screenCenter();
+				return target;
 			}
 			else if (getImagesExistsTag(tag))
 			{
-				return target = getImagesTag(tag).screenCenter();
+				target = getImagesTag(tag).screenCenter();
+				return target;
 			}
 			else if (!getTextExistsTag(tag) || !getImagesExistsTag(tag))
 			{
@@ -181,11 +183,13 @@ class LuaCode extends FlxBasic
 			var target:Dynamic = null;
 			if (getTextExistsTag(tag))
 			{
-				return target = getTextTag(tag).scale.set(x, y);
+				target = getTextTag(tag).scale.set(x, y);
+				return target;
 			}
 			else if (getImagesExistsTag(tag))
 			{
-				return target = getImagesTag(tag).scale.set(x, y);
+				target = getImagesTag(tag).scale.set(x, y);
+				return target;
 			}
 			else if (!getTextExistsTag(tag) || !getImagesExistsTag(tag))
 			{
@@ -198,11 +202,13 @@ class LuaCode extends FlxBasic
 			var target:Dynamic = null;
 			if (getTextExistsTag(tag))
 			{
-				return target = getTextTag(tag).scrollFactor.set(x, y);
+				target = getTextTag(tag).scrollFactor.set(x, y);
+				return target;
 			}
 			else if (getImagesExistsTag(tag))
 			{
-				return target = getImagesTag(tag).scrollFactor.set(x, y);
+				target = getImagesTag(tag).scrollFactor.set(x, y);
+				return target;
 			}
 			else if (!getTextExistsTag(tag) || !getImagesExistsTag(tag))
 			{
@@ -215,15 +221,18 @@ class LuaCode extends FlxBasic
 			var target:Dynamic = null;
 			if (getTextExistsTag(tag))
 			{
-				return target = getTextTag(tag).setPosition(x, y);
+				target = getTextTag(tag).setPosition.bind(x, y);
+				return target;
 			}
 			else if (getImagesExistsTag(tag))
 			{
-				return target = getImagesTag(tag).setPosition(x, y);
+				target = getImagesTag(tag).setPosition.bind(x, y);
+				return target;
 			}
 			else if (getCameraExistsTag(tag))
 			{
-				return target = getCameraTag(tag).setPosition(x, y);
+				target = getCameraTag(tag).setPosition.bind(x, y);
+				return target;
 			}
 			else if (!getTextExistsTag(tag) || !getImagesExistsTag(tag))
 			{
