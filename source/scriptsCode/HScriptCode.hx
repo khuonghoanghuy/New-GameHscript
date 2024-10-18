@@ -1,5 +1,6 @@
 package scriptsCode;
 
+import backend.ModPaths;
 import crowplexus.iris.Iris;
 import crowplexus.iris.IrisConfig;
 import flixel.FlxBasic;
@@ -57,6 +58,7 @@ class HScriptCode extends FlxBasic
 		{
 			return PlayState.r_instance.remove(basic);
 		});
+		myScript.set("Paths", ModPaths);
 		myScript.execute();
 	}
 

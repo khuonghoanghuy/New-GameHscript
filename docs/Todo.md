@@ -9,3 +9,4 @@
 * [ ] Make Lua can able remove script thought `removeLuaScript`
 * [ ] Make Lua can able to load all .lua file when on data and more sub-folders (impossible)
 * [X] Make HScript can import classes (import classes by `importClass()`)
+* [ ] Make a Modding Select Menu, make a modding loaded by `data.json`

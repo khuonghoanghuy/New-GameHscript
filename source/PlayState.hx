@@ -1,5 +1,6 @@
 package;
 
+import backend.Modding;
 import flixel.*;
 import flixel.text.FlxText;
 import haxe.io.Path;
@@ -11,10 +12,19 @@ using StringTools;
 class PlayState extends FlxState
 {
 	public static var r_instance:PlayState = null;
+	var engineVersion:String = "0.0.0";
 
 	public function new()
 	{
 		super();
+		engineVersion = FlxG.stage.application.meta.get("version");
+		Modding.loadMods();
+		for (mod in Modding.mods)
+		{
+			trace("Loaded mod: " + mod.title);
+			if (mod.versionMeet != engineVersion)
+				FlxG.stage.window.alert("Mods name: " + mod.title + " does not meet the current engine version", "Error Loading Mods");
+		}
 		r_instance = this;
 	}
 

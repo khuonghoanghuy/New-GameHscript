@@ -7,7 +7,7 @@ Game Hscript is a text-based game engine by using script as source, this will ma
 ## Lua support (desktop with cpp only)
 * Not only Hscript, Lua is also on there with more easier to code game!
 ## Select contains folder (able to load many?!?)
-* With polymod, we can selected more mods to load as only 1 folder
+* We can now working more folder with `data.json` file (must put this to make sure is work)
 
 # What thing will plan to add??
 Check out [TODO](./docs/Todo.md)

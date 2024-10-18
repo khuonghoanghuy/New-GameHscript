@@ -7,3 +7,5 @@
 * game - a variable that can be access into PlayState as PlayState.r_instance
 * add - a function that can be added a object into a game
 * remove - same as `add` but instead added object, is will remove the object are exists
+## Classes Working
+* Paths (default name is `ModPaths`) - handle loaded file, images,...

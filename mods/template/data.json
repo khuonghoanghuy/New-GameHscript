@@ -1,5 +1,7 @@
 {
 	"title": "Template",
 	"description": "Your game description.",
-	"author": "You!"
+	"author": "You!",
+	"version": "0.0.1",
+	"versionMeet": "0.3.0"
 }

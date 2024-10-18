@@ -1,5 +1,6 @@
 package scriptsCode;
 
+import backend.ModPaths;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -295,6 +296,10 @@ class LuaCode extends FlxBasic
 		});
 		// Text Parent
 		presentText();
+		// Images Parent
+		presentImages();
+		// Camera Parent
+		presentCamera();
 	}
 
 	function presentText():Void
@@ -388,7 +393,7 @@ class LuaCode extends FlxBasic
 		add_callback("makeLuaSprite", function(tag:String, x:Float, y:Float, ?pSprite:String = null)
 		{
 			var sprite:FlxSprite = new FlxSprite(x, y);
-			sprite.loadGraphic(pSprite);
+			sprite.loadGraphic(ModPaths.getImage(pSprite));
 			sprite.active = true;
 			playState.images.set(tag, sprite);
 		});
