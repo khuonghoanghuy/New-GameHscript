@@ -1,5 +1,5 @@
 # Lua API List
-## Affect on any object (IN WORK LIKE THIS)
+## Affect on any object
 * getProperty(tag:String) - get value of the variable object
 * setProperty(tag:String, value:Dynamic) - set a value of the variable object, can be used like `setProperty("setMe.x", "2")` and the `setMe` variable will be set on `x` by 2
 * getPropertyFromClass(classesFile:String, variable:String) - get a value of the variable from a classes
