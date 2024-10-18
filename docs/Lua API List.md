@@ -6,6 +6,10 @@
 * setPropertyFromClass(classesFile:String, variable:String, value:Dynamic) - set a value of the variable from a classes, can be used like `setPropertyFromClass("flixel.FlxG", "mouse.visible", false)` and the `mouse` variable from `FlxG` clases will be set as `false`
 * addObject(tag:String) - added a object from images, text
 * removeObject(tag:String) - remove a object from images, text
+* screenCenterObject(tag:String) - set screen on center on any object with text, images
+* scaleObject(tag:String, x:Float = 1, y:Float = 1) - set scale on any object with text, images
+* scrollFactorObject(tag:String, x:Float = 1, y:Float = 1) - set scroll factor on any object, useful with camera thing
+* setPositionObject(tag:String, x:Float = 1, y:Float = 1) - set position with `x` and `y` on any object
 ## Text API
 * makeLuaText(tag:String, x:Float = 0, y:Float = 0, fieldwidth:Int = 0, text:String = "", size:Int = 8) - make/init a text, using `addObject` or `addLuaText` to add the current target text
 * setTextString(tag:String, text:String = "") - change from a current text to a new one

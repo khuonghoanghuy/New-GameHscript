@@ -159,6 +159,78 @@ class LuaCode extends FlxBasic
 			}
 			return Reflect.setProperty(getClassProperty, variable, value);
 		});
+		add_callback("screenCenterObject", function(tag:String)
+		{
+			var target:Dynamic = null;
+			if (getTextExistsTag(tag))
+			{
+				return target = getTextTag(tag).screenCenter();
+			}
+			else if (getImagesExistsTag(tag))
+			{
+				return target = getImagesTag(tag).screenCenter();
+			}
+			else if (!getTextExistsTag(tag) || !getImagesExistsTag(tag))
+			{
+				Logger.log("Key not found in images, or text: " + tag);
+				return;
+			}
+		});
+		add_callback("scaleObject", function(tag:String, x:Float = 1, y:Float = 1)
+		{
+			var target:Dynamic = null;
+			if (getTextExistsTag(tag))
+			{
+				return target = getTextTag(tag).scale.set(x, y);
+			}
+			else if (getImagesExistsTag(tag))
+			{
+				return target = getImagesTag(tag).scale.set(x, y);
+			}
+			else if (!getTextExistsTag(tag) || !getImagesExistsTag(tag))
+			{
+				Logger.log("Key not found in images, or text: " + tag);
+				return;
+			}
+		});
+		add_callback("scrollFactorObject", function(tag:String, x:Float = 0, y:Float = 0)
+		{
+			var target:Dynamic = null;
+			if (getTextExistsTag(tag))
+			{
+				return target = getTextTag(tag).scrollFactor.set(x, y);
+			}
+			else if (getImagesExistsTag(tag))
+			{
+				return target = getImagesTag(tag).scrollFactor.set(x, y);
+			}
+			else if (!getTextExistsTag(tag) || !getImagesExistsTag(tag))
+			{
+				Logger.log("Key not found in images, or text: " + tag);
+				return;
+			}
+		});
+		add_callback("setPositionObject", function(tag:String, x:Float = 0, y:Float = 0)
+		{
+			var target:Dynamic = null;
+			if (getTextExistsTag(tag))
+			{
+				return target = getTextTag(tag).setPosition(x, y);
+			}
+			else if (getImagesExistsTag(tag))
+			{
+				return target = getImagesTag(tag).setPosition(x, y);
+			}
+			else if (getCameraExistsTag(tag))
+			{
+				return target = getCameraTag(tag).setPosition(x, y);
+			}
+			else if (!getTextExistsTag(tag) || !getImagesExistsTag(tag))
+			{
+				Logger.log("Key not found in images, or text: " + tag);
+				return;
+			}
+		});
 		add_callback("addObject", function(tag:String)
 		{
 			var target:Dynamic = null;
