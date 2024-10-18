@@ -74,4 +74,11 @@ class PlayState extends FlxState
 
 		return value;
 	}
+	public function runHaxeCode(codeString:String)
+	{
+		for (i in 0...hscriptScripts.length)
+		{
+			hscriptScripts[i].myScript.execute();
+		}
+	}
 }
