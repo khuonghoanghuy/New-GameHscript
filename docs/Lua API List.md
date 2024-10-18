@@ -23,9 +23,9 @@
 ## Sprite API
 * makeLuaSprite(tag:String, x:Float, y:Float, ?pSprite:String = null) - make/init a sprite, using `addObject` or `addLuaSprite` to add the current target sprite
 * playAnim(tag:String, name:String, force:Bool) - play a animation from the sprite
-* addAnim(tag:String, name:String, numArray:Array<Int>, fps:Int = 24, looped:Bool = false) - add a animation from the same width and height box of frames
+* addAnim(tag:String, name:String, numArray:Array(Int), fps:Int = 24, looped:Bool = false) - add a animation from the same width and height box of frames
 * addAnimByPrefix(tag:String, name:String, prefix:String, fps:Int = 24, looped:Bool = false) - add a animation from the prefix of sprite sheet
-* addAnimByIndices(tag:String, name:String, prefix:String, numArray:Array<Int>, fps:Int = 24, looped:Bool = false) - add a animation from the prefix with advance of indices
-* addAnimByStringIndices(tag:String, name:String, prefix:String, idices:Array<String>, fps:Int = 24, looped:Bool = false) - same as `addAnimByIndices` but with number, string text only
+* addAnimByIndices(tag:String, name:String, prefix:String, numArray:Array(Int), fps:Int = 24, looped:Bool = false) - add a animation from the prefix with advance of indices
+* addAnimByStringIndices(tag:String, name:String, prefix:String, idices:Array(String), fps:Int = 24, looped:Bool = false) - same as `addAnimByIndices` but with number, string text only
 * addLuaSprite(tag:String) - add sprite into the game
 * removeLuaSprite(tag:String) - remove sprite from the game
