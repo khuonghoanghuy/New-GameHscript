@@ -1,6 +1,7 @@
 package scriptsCode;
 
 import flixel.FlxBasic;
+import flixel.FlxSprite;
 import flixel.text.FlxText;
 import llua.Convert;
 import llua.Lua.Lua_helper;
@@ -158,11 +159,49 @@ class LuaCode extends FlxBasic
 			}
 			return Reflect.setProperty(getClassProperty, variable, value);
 		});
+		add_callback("addObject", function(tag:String)
+		{
+			var target:Dynamic = null;
+			if (getTextExistsTag(tag))
+			{
+				target = getTextTag(tag);
+				playState.add(target);
+			}
+			else if (getImagesExistsTag(tag))
+			{
+				target = getImagesTag(tag);
+				playState.add(target);
+			}
+			else if (!getTextExistsTag(tag) || !getImagesExistsTag(tag))
+			{
+				Logger.log("Key not found in images, or text: " + tag);
+				return;
+			}
+		});
+		add_callback("removeObject", function(tag:String)
+		{
+			var target:Dynamic = null;
+			if (getTextExistsTag(tag))
+			{
+				target = getTextTag(tag);
+				playState.remove(target);
+			}
+			else if (getImagesExistsTag(tag))
+			{
+				target = getImagesTag(tag);
+				playState.remove(target);
+			}
+			else if (!getTextExistsTag(tag) || !getImagesExistsTag(tag))
+			{
+				Logger.log("Key not found in images, or text: " + tag);
+				return;
+			}
+		});
+
 		add_callback("setVar", function(key:String, value:Dynamic)
 		{
 			LuaStore.setVar(key, value);
 		});
-
 		add_callback("getVar", function(key:String):Dynamic
 		{
 			return LuaStore.getVar(key);
@@ -261,7 +300,67 @@ class LuaCode extends FlxBasic
 		return playState.text.get(tag);
 	}
 
-	function presentImages():Void {}
+	function presentImages():Void
+	{
+		add_callback("makeLuaSprite", function(tag:String, x:Float, y:Float, ?pSprite:String = null)
+		{
+			var sprite:FlxSprite = new FlxSprite(x, y);
+			sprite.loadGraphic(pSprite);
+			sprite.active = true;
+			playState.images.set(tag, sprite);
+		});
+
+		add_callback("playAnim", function(tag:String, name:String, force:Bool)
+		{
+			if (getImagesExistsTag(tag))
+			{
+				getImagesTag(tag).animation.play(tag);
+			}
+		});
+		add_callback("addAnim", function(tag:String, name:String, numArray:Array<Int>, fps:Int = 24, looped:Bool = false)
+		{
+			if (getImagesExistsTag(tag))
+			{
+				getImagesTag(tag).animation.add(name, numArray, fps, looped);
+			}
+		});
+		add_callback("addAnimByPrefix", function(tag:String, name:String, prefix:String, fps:Int = 24, looped:Bool = false)
+		{
+			if (getImagesExistsTag(tag))
+			{
+				getImagesTag(tag).animation.addByPrefix(name, prefix, fps, looped);
+			}
+		});
+		add_callback("addAnimByIndices", function(tag:String, name:String, prefix:String, numArray:Array<Int>, fps:Int = 24, looped:Bool = false)
+		{
+			if (getImagesExistsTag(tag))
+			{
+				getImagesTag(tag).animation.addByIndices(name, prefix, numArray, ".png", fps, looped);
+			}
+		});
+		add_callback("addAnimByStringIndices", function(tag:String, name:String, prefix:String, idices:Array<String>, fps:Int = 24, looped:Bool = false)
+		{
+			if (getImagesExistsTag(tag))
+			{
+				getImagesTag(tag).animation.addByStringIndices(name, prefix, idices, ".png", fps, looped);
+			}
+		});
+
+		add_callback("addLuaSprite", function(tag:String)
+		{
+			if (getImagesExistsTag(tag))
+			{
+				playState.add(getImagesTag(tag));
+			}
+		});
+		add_callback("removeLuaSprite", function(tag:String)
+		{
+			if (getImagesExistsTag(tag))
+			{
+				playState.remove(getImagesTag(tag));
+			}
+		});
+	}
 
 	function getImagesExistsTag(tag:String):Bool
 	{
